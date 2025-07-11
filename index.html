@@ -6,21 +6,77 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List | Paskarian </title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body>
+<body class="flex flex-col text-center items-center justify-evenly min-h-screen bg-gray-100">
     <!-- Hero Website -->
     <header>
-        <h1>My To-Do List</h1>
+        <h1 class="text-3xl font-bold">My To-Do List</h1>
     </header>
 
-    <main>
+    <main class="bg-blue-100 w-[600px] p-[20px] rounded shadow-lg">
+        <!-- To-Do Input -->
+        <form action="" class="flex justify-between my-[20px]">
+            <div class="flex gap-[8px]">
+                <input type="text" class="border rounded py-[4px] px-[8px] w-[200px]" id="task-input" name="todo-input"
+                    placeholder="Enter your task here..." required>
+                <input type="date" class="border rounded py-[4px] px-[8px] w-[200px]" id="due-date-input"
+                    name="due-date" required>
+            </div>
+            <button id="add-task-button" type="submit" class="bg-blue-500 text-white px-[10px] py-[4px] rounded">Add
+                Task</button>
+        </form>
 
+        <!-- Action To-Do List -->
+        <section class="flex justify-between my-[20px]">
+            <!-- Filtering To-Do List -->
+            <div class="">
+                <label for="filter" class="mr-[10px]">Filter by:</label>
+                <select id="filter" name="filter" class="border rounded py-[4px]">
+                    <option value="all">All</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                </select>
+            </div>
+            <!-- Clear To-Do List -->
+            <button class="bg-red-500 text-white px-[10px] py-[4px] rounded">Clear</button>
+        </section>
+
+        <!-- To-Do List Display -->
+        <section>
+            <header>
+                <h2 class="text-xl font-bold">Task List</h2>
+            </header>
+
+            <div>
+                <p>You have no task :)</p>
+            </div>
+
+
+
+
+            <!-- <ul id="todo-list" class="list-disc pl-[20px]">
+            <li class="flex justify-between items-center my-[10px]">
+                <span>Sample Task 1 - Due: 2025-01-01</span>
+                <div>
+                    <button class="bg-green-500 text-white px-[10px] py-[4px] rounded">Complete</button>
+                    <button class="bg-red-500 text-white px-[10px] py-[4px] rounded">Delete</button>
+                </div>
+            </li>
+            // More tasks can be added here
+        </ul> -->
+        </section>
     </main>
 
     <footer>
         <p>© 2025 Paskarian. All rights reserved.</p>
     </footer>
 </body>
+
+<!-- Javascript -->
+<script src="js/script.js"></script>
 
 </html>
