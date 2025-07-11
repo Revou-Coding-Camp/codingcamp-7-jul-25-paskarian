@@ -19,14 +19,14 @@
 
     <main class="bg-blue-100 w-[600px] p-[20px] rounded shadow-lg">
         <!-- To-Do Input -->
-        <form action="" class="flex justify-between my-[20px]">
+        <form id="task-form" class="flex justify-between my-[20px]">
             <div class="flex gap-[8px]">
                 <input type="text" class="border rounded py-[4px] px-[8px] w-[200px]" id="task-input" name="todo-input"
-                    placeholder="Enter your task here..." required>
+                    placeholder="Enter your task here...">
                 <input type="date" class="border rounded py-[4px] px-[8px] w-[200px]" id="due-date-input"
-                    name="due-date" required>
+                    name="due-date">
             </div>
-            <button id="add-task-button" type="submit" class="bg-blue-500 text-white px-[10px] py-[4px] rounded">Add
+            <button type="submit" class="bg-blue-500 text-white px-[10px] py-[4px] rounded">Add
                 Task</button>
         </form>
 
@@ -42,7 +42,8 @@
                 </select>
             </div>
             <!-- Clear To-Do List -->
-            <button class="bg-red-500 text-white px-[10px] py-[4px] rounded">Clear</button>
+            <button id="clear-all-button" type="button" class="bg-red-500 text-white px-[10px] py-[4px] rounded">Clear
+                All</button>
         </section>
 
         <!-- To-Do List Display -->
@@ -52,22 +53,24 @@
             </header>
 
             <div>
-                <p>You have no task :)</p>
+                <ul id="task-list" class="list-disc pl-[20px]">
+                    <p>Tugas kamu belum ada nih, santai dulu gak sih :D</p>
+
+                    <!-- <li class="flex justify-between items-center my-[10px]">
+                        <span>Sample Task 1 - Due: 2025-01-01</span>
+                        <div>
+                            <button class="bg-green-500 text-white px-[10px] py-[4px] rounded">Complete</button>
+                            <button class="bg-red-500 text-white px-[10px] py-[4px] rounded">Delete</button>
+                        </div>
+                    </li> -->
+                    <!-- // More tasks can be added here -->
+                </ul>
             </div>
 
 
 
 
-            <!-- <ul id="todo-list" class="list-disc pl-[20px]">
-            <li class="flex justify-between items-center my-[10px]">
-                <span>Sample Task 1 - Due: 2025-01-01</span>
-                <div>
-                    <button class="bg-green-500 text-white px-[10px] py-[4px] rounded">Complete</button>
-                    <button class="bg-red-500 text-white px-[10px] py-[4px] rounded">Delete</button>
-                </div>
-            </li>
-            // More tasks can be added here
-        </ul> -->
+
         </section>
     </main>
 
