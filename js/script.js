@@ -8,7 +8,7 @@ function addTask(event) {
 
     // Validate inputs
     if (taskInput.value.trim() === '' || dueDateInput.value === '') {
-        alert('Isinya benar-benar harus diisi bro!');
+        alert('Tugas dan tanggalnya benar-benar harus diisi bro!');
         return;
     }
     else {
@@ -45,17 +45,62 @@ function displayTasks() {
     }
 
     tasks.forEach(task => {
+        // Buat list tugas
         const taskItem = document.createElement('li');
         taskItem.className = 'task-item flex justify-between items-center my-[10px]';
-        taskItem.innerHTML = `
-            <span>${task.task} - Due: ${task.dueDate}</span>
-            <div>
-                <button class="bg-green-500 text-white px-[10px] py-[4px] rounded">Complete</button>
-                <button id="delete-task-${task.id}" type="button" class="bg-red-500 text-white px-[10px] py-[4px] rounded">Delete</button>
-            </div>
-        `;
+
+        // Buat span deskripsi tugas
+        const taskText = document.createElement('span');
+        taskText.textContent = `${task.task} - Due: ${task.dueDate}`;
+
+        // Buat wrapper tombol
+        const buttonWrapper = document.createElement('div');
+
+        // Tombol Complete (belum diaktifkan)
+        const completeBtn = document.createElement('button');
+        completeBtn.className = 'bg-green-500 text-white px-[10px] py-[4px] rounded mr-[8px]';
+        if (task.completed) {
+            taskText.style.textDecoration = 'line-through'; // Mark as completed
+            completeBtn.textContent = 'Undo'; // Change button text
+        } else {
+            taskText.style.textDecoration = 'none'; // Unmark as completed
+            completeBtn.textContent = 'Complete'; // Change button text back
+        }
+
+        // Tombol Delete
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'bg-red-500 text-white px-[10px] py-[4px] rounded';
+        deleteBtn.textContent = 'Delete';
+
+        // Tambahkan event listener ke tombol Complete
+        completeBtn.addEventListener('click', () => {
+            // Toggle completion status
+            task.completed = !task.completed;
+            if (task.completed) {
+                taskText.style.textDecoration = 'line-through'; // Mark as completed
+                completeBtn.textContent = 'Undo'; // Change button text
+            } else {
+                taskText.style.textDecoration = 'none'; // Unmark as completed
+                completeBtn.textContent = 'Complete'; // Change button text back
+            }
+        });
+
+        // Tambahkan event listener ke tombol Delete
+        deleteBtn.addEventListener('click', () => {
+            deleteTask(task.id);
+        });
+
+        // Tambahkan tombol ke wrapper
+        buttonWrapper.appendChild(completeBtn);
+        buttonWrapper.appendChild(deleteBtn);
+
+        // Tambahkan elemen ke <li>
+        taskItem.appendChild(taskText);
+        taskItem.appendChild(buttonWrapper);
         taskList.appendChild(taskItem);
     });
+
+    document.getElementById('filter-select').value = 'all';
 }
 
 // Function to delete all tasks
@@ -72,13 +117,156 @@ function deleteAllTask() {
 // Function to delete a specific task
 function deleteTask(id) {
 
-    // tasks = tasks.filter(task => task.id !== id); // Remove the task with the given ID
-    // displayTasks(); // Refresh the task list display
+    tasks = tasks.filter(task => task.id !== id); // Remove the task with the given ID
+    displayTasks(); // Refresh the task list display
 }
 
 // Funtion to filter tasks
-function filterTasks() {
+function filterTasks(event) {
+    const filterValue = event.target.value;
+    if (filterValue === 'all') {
+        displayTasks();
+    } else if (filterValue === 'completed') {
+        displayCompletedTasks();
+    } else if (filterValue === 'pending') {
+        displayPendingTasks();
+    }
+}
 
+// Display Completed Task
+function displayCompletedTasks() {
+    const completedTasks = tasks.filter(task => task.completed);
+    const taskList = document.getElementById('task-list');
+    taskList.innerHTML = ''; // Clear the current list
+
+    if (completedTasks.length === 0) {
+        taskList.innerHTML = '<p>OMG, belum ada tugas yang selesai.</p>';
+        return;
+    }
+
+    completedTasks.forEach(task => {
+        // Buat list tugas
+        const taskItem = document.createElement('li');
+        taskItem.className = 'task-item flex justify-between items-center my-[10px]';
+
+        // Buat span deskripsi tugas
+        const taskText = document.createElement('span');
+        taskText.textContent = `${task.task} - Due: ${task.dueDate}`;
+
+        // Buat wrapper tombol
+        const buttonWrapper = document.createElement('div');
+
+        // Tombol Complete (belum diaktifkan)
+        const completeBtn = document.createElement('button');
+        completeBtn.className = 'bg-green-500 text-white px-[10px] py-[4px] rounded mr-[8px]';
+        if (task.completed) {
+            taskText.style.textDecoration = 'line-through'; // Mark as completed
+            completeBtn.textContent = 'Undo'; // Change button text
+        } else {
+            taskText.style.textDecoration = 'none'; // Unmark as completed
+            completeBtn.textContent = 'Complete'; // Change button text back
+        }
+
+        // Tombol Delete
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'bg-red-500 text-white px-[10px] py-[4px] rounded';
+        deleteBtn.textContent = 'Delete';
+
+        // Tambahkan event listener ke tombol Complete
+        completeBtn.addEventListener('click', () => {
+            // Toggle completion status
+            task.completed = !task.completed;
+            if (task.completed) {
+                taskText.style.textDecoration = 'line-through'; // Mark as completed
+                completeBtn.textContent = 'Undo'; // Change button text
+            } else {
+                taskText.style.textDecoration = 'none'; // Unmark as completed
+                completeBtn.textContent = 'Complete'; // Change button text back
+            }
+        });
+
+        // Tambahkan event listener ke tombol Delete
+        deleteBtn.addEventListener('click', () => {
+            deleteTask(task.id);
+        });
+
+        // Tambahkan tombol ke wrapper
+        buttonWrapper.appendChild(completeBtn);
+        buttonWrapper.appendChild(deleteBtn);
+
+        // Tambahkan elemen ke <li>
+        taskItem.appendChild(taskText);
+        taskItem.appendChild(buttonWrapper);
+        taskList.appendChild(taskItem);
+    });
+}
+
+// Display Pending Task
+function displayPendingTasks() {
+    const pendingTasks = tasks.filter(task => !task.completed);
+    const taskList = document.getElementById('task-list');
+    taskList.innerHTML = ''; // Clear the current list
+
+    if (pendingTasks.length === 0) {
+        taskList.innerHTML = '<p>Wah, kamu gak punya tugas lagi nih :)</p>';
+        return;
+    }
+
+    pendingTasks.forEach(task => {
+        // Buat list tugas
+        const taskItem = document.createElement('li');
+        taskItem.className = 'task-item flex justify-between items-center my-[10px]';
+
+        // Buat span deskripsi tugas
+        const taskText = document.createElement('span');
+        taskText.textContent = `${task.task} - Due: ${task.dueDate}`;
+
+        // Buat wrapper tombol
+        const buttonWrapper = document.createElement('div');
+
+        // Tombol Complete (belum diaktifkan)
+        const completeBtn = document.createElement('button');
+        completeBtn.className = 'bg-green-500 text-white px-[10px] py-[4px] rounded mr-[8px]';
+        if (task.completed) {
+            taskText.style.textDecoration = 'line-through'; // Mark as completed
+            completeBtn.textContent = 'Undo'; // Change button text
+        } else {
+            taskText.style.textDecoration = 'none'; // Unmark as completed
+            completeBtn.textContent = 'Complete'; // Change button text back
+        }
+
+        // Tombol Delete
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'bg-red-500 text-white px-[10px] py-[4px] rounded';
+        deleteBtn.textContent = 'Delete';
+
+        // Tambahkan event listener ke tombol Complete
+        completeBtn.addEventListener('click', () => {
+            // Toggle completion status
+            task.completed = !task.completed;
+            if (task.completed) {
+                taskText.style.textDecoration = 'line-through'; // Mark as completed
+                completeBtn.textContent = 'Undo'; // Change button text
+            } else {
+                taskText.style.textDecoration = 'none'; // Unmark as completed
+                completeBtn.textContent = 'Complete'; // Change button text back
+            }
+        });
+
+        // Tambahkan event listener ke tombol Delete
+        deleteBtn.addEventListener('click', () => {
+            deleteTask(task.id);
+        });
+
+        // Tambahkan tombol ke wrapper
+        buttonWrapper.appendChild(completeBtn);
+        buttonWrapper.appendChild(deleteBtn);
+
+        // Tambahkan elemen ke <li>
+        taskItem.appendChild(taskText);
+        taskItem.appendChild(buttonWrapper);
+        taskList.appendChild(taskItem);
+    });
 }
 
 // Event Listener for the form submission
@@ -88,4 +276,7 @@ document.getElementById('task-form').addEventListener('submit', addTask)
 document.getElementById('clear-all-button').addEventListener('click', deleteAllTask)
 
 // Event Listener for the delete specific task button
-document.getElementById('delete-task-${task.id}').addEventListener('click', deleteTask)
+// document.getElementById('delete-task-${task.id}').addEventListener('click', deleteTask)
+
+// Event Listener for selecting Completed Tasks
+document.getElementById('filter-select').addEventListener('change', filterTasks);
