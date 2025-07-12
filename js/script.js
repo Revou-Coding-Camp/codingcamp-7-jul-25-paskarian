@@ -26,8 +26,6 @@ function addTask(event) {
         // Clear the input fields
         taskInput.value = '';
         dueDateInput.value = '';
-
-        console.log("New Task Added:", newTask);
     }
 
     // Display the updated task list
